@@ -1,0 +1,126 @@
+Table user [headercolor: #edede4] {
+	id text [ pk, not null ]
+	first_name text
+	last_name text
+	phone text [ not null, unique ]
+	created_at timestamptz [ not null ]
+	updated_at timestamptz [ not null ]
+	role_id text
+}
+
+Table role [headercolor: #edede4] {
+	id text [ pk, not null ]
+	name varchar(255) [ not null, unique ]
+	description text
+	created_at timestamptz [ not null ]
+	updated_at timestamptz [ not null ]
+}
+
+Table category [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	name text [ not null, unique ]
+	slug text [ not null, unique ]
+	created_at timestamptz [ not null ]
+}
+
+Table product [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	title text [ not null ]
+	slug text [ not null, unique ]
+	price bigint [ not null ]
+	stock integer [ not null, default: 1 ]
+	category_id text [ not null ]
+	created_at timestamptz [ not null ]
+	updated_at timestamptz [ not null ]
+	specs jsonb
+	images text
+	discounted_price bigint
+}
+
+Table cart [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	user_id text [ not null, unique ]
+	updated_at timestamptz [ not null ]
+	total_price bigint [ not null ]
+}
+
+Table cart_Item [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	product_id text [ not null ]
+	cart_id text [ not null ]
+	quantity integer [ not null, default: 1 ]
+}
+
+Table order [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	user_id text [ not null ]
+	status varchar(255) [ not null ]
+	total_amount bigint [ not null ]
+	address jsonb [ not null ]
+	created_at timestamptz [ not null ]
+	updated_at timestamptz [ not null ]
+}
+
+Table order_item [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	quantity integer [ not null ]
+	price bigint [ not null ]
+	product_id text [ not null ]
+	order_id text [ not null ]
+}
+
+Table campaign [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	title varchar(255) [ not null ]
+	desc varchar(255)
+	link varchar(255)
+	images text [ not null ]
+}
+
+Table campaign_product [headercolor: #175e7a] {
+	id text [ pk, not null ]
+	campaign_id text [ not null ]
+	product_id text [ not null ]
+	discount_type varchar(255) [ not null ]
+	discount_value bigint [ not null ]
+}
+
+Ref fk_product_category_id_category {
+	product.category_id > category.id [ delete: no action, update: no action ]
+}
+
+Ref fk_cart_user_id_user {
+	cart.user_id > user.id [ delete: no action, update: no action ]
+}
+
+Ref fk_order_user_id_user {
+	order.user_id > user.id [ delete: no action, update: no action ]
+}
+
+Ref fk_cart_Item_product_id_product {
+	cart_Item.product_id > product.id [ delete: no action, update: no action ]
+}
+
+Ref fk_cart_Item_cart_id_cart {
+	cart_Item.cart_id > cart.id [ delete: no action, update: no action ]
+}
+
+Ref fk_order_item_product_id_product {
+	order_item.product_id > product.id [ delete: no action, update: no action ]
+}
+
+Ref fk_order_item_order_id_order {
+	order_item.order_id > order.id [ delete: no action, update: no action ]
+}
+
+Ref fk_user_role_id_role {
+	user.role_id > role.id [ delete: no action, update: no action ]
+}
+
+Ref fk_campaign_product_campaign_id_campaign {
+	campaign_product.campaign_id > campaign.id [ delete: no action, update: no action ]
+}
+
+Ref fk_campaign_product_product_id_product {
+	campaign_product.product_id > product.id [ delete: no action, update: no action ]
+}
