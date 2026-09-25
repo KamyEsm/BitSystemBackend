@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,12 @@ public class Campaign extends BaseEntity {
     @Convert(converter = StringListConverter.class)
     @Column(columnDefinition = "TEXT")
     private List<String> images = new ArrayList<>();
+
+    @Column(nullable = false)
+    private Instant startDate;
+
+    @Column(nullable = false)
+    private Instant endDate;
 
 
 
