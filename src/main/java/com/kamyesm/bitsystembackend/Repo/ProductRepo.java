@@ -3,5 +3,7 @@ package com.kamyesm.bitsystembackend.Repo;
 import com.kamyesm.bitsystembackend.Entity.Product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepo extends JpaRepository<String , Product> {
+import java.util.UUID;
+
+public interface ProductRepo extends JpaRepository<UUID, Product> {
 }
