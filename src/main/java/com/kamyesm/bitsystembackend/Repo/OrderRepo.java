@@ -2,8 +2,9 @@ package com.kamyesm.bitsystembackend.Repo;
 
 import com.kamyesm.bitsystembackend.Entity.Order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
-
-public interface OrderRepo extends JpaRepository<UUID, Order> {
+@Repository
+public interface OrderRepo extends JpaRepository<Order, UUID> {
 }

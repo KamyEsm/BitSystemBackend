@@ -1,8 +1,9 @@
 package com.kamyesm.bitsystembackend.Repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
-
-public interface CampaignRepo extends JpaRepository<UUID, CampaignRepo> {
+@Repository
+public interface CampaignRepo extends JpaRepository<CampaignRepo, UUID> {
 }
