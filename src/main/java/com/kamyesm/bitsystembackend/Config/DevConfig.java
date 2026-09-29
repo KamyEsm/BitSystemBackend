@@ -1,10 +1,13 @@
 package com.kamyesm.bitsystembackend.Config;
 
+import com.kamyesm.bitsystembackend.Utils.Enum.StaffRole;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.lang.Nullable;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,11 +21,14 @@ import java.util.List;
 
 @Configuration
 @Profile("dev")
+@EnableJpaAuditing
 public class DevConfig {
 
     @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/shop/**")
                 .authorizeHttpRequests( request -> {
                     request.anyRequest().permitAll();
                 })
@@ -42,6 +48,35 @@ public class DevConfig {
                     }
                 }))
                 .csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
+
+
+    @Bean
+    @Order(1)
+    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .securityMatcher("/api/admin/**")
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        CorsConfiguration cors = new CorsConfiguration();
+                        cors.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        cors.setAllowedMethods(Collections.singletonList("*"));
+                        cors.setAllowCredentials(true);
+                        cors.setAllowedHeaders(Collections.singletonList("*"));
+                        cors.setMaxAge(3600L);
+                        return cors;
+                    }
+                }))
+                .logout(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> {
+                    request.anyRequest().permitAll();
+                });
         return http.build();
     }
 }

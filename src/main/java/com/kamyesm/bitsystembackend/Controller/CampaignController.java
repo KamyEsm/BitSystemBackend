@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/campaign")
+@RequestMapping("/api/shop/campaign")
 public class CampaignController {
 
     @PostMapping("")
