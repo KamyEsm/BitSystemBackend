@@ -1,15 +1,14 @@
 package com.kamyesm.bitsystembackend.Entity.Auth;
 
 import com.kamyesm.bitsystembackend.Entity.BaseEntity;
-import com.kamyesm.bitsystembackend.Utils.Enum.StaffAccountStatus;
+import com.kamyesm.bitsystembackend.Utils.Enum.AccountStatus;
+import com.kamyesm.bitsystembackend.Utils.Enum.StaffRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
@@ -28,9 +27,9 @@ public class Staff extends BaseEntity {
     @Column(name = "phone", length = 15, unique = true)
     private String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id" , nullable = false)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(nullable = false)
+    private StaffRole role;
 
     @Column(nullable = false , unique = true)
     private String userName;
@@ -40,7 +39,7 @@ public class Staff extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private StaffAccountStatus accountStatus;
+    private AccountStatus accountStatus;
 
     private int failedLoginAttempts;
 

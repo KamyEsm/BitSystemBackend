@@ -4,6 +4,8 @@ package com.kamyesm.bitsystembackend.Entity.Auth;
 import com.kamyesm.bitsystembackend.Entity.BaseEntity;
 import com.kamyesm.bitsystembackend.Entity.Order.Cart;
 import com.kamyesm.bitsystembackend.Entity.Order.Order;
+import com.kamyesm.bitsystembackend.Utils.Enum.AccountStatus;
+import com.kamyesm.bitsystembackend.Utils.Enum.CustomerRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,9 +39,9 @@ public class User  extends BaseEntity {
     @Column(name = "phone", length = 15, nullable = false, unique = true)
     private String phone;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id" , nullable = false)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(nullable = false)
+    private CustomerRole role;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;
@@ -48,5 +50,9 @@ public class User  extends BaseEntity {
     private Cart cart;
 
     private String hashedPassword;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AccountStatus accountStatus;
 
 }

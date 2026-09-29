@@ -1,6 +1,6 @@
 package com.kamyesm.bitsystembackend.Utils.Enum;
 
-public enum StaffAccountStatus {
+public enum AccountStatus {
     ACTIVE,
     DELETED
 }
