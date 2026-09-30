@@ -1,5 +1,6 @@
 package com.kamyesm.bitsystembackend.Config;
 
+import com.kamyesm.bitsystembackend.Security.OtpAuthenticationProvider;
 import com.kamyesm.bitsystembackend.Utils.Enum.StaffRole;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -8,13 +9,19 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +30,8 @@ import java.util.List;
 @Profile("dev")
 @EnableJpaAuditing
 public class DevConfig {
+
+    private OtpAuthenticationProvider otpAuthenticationProvider;
 
     @Bean
     @Order(2)
@@ -47,7 +56,8 @@ public class DevConfig {
                         return cors;
                     }
                 }))
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .authenticationProvider(otpAuthenticationProvider);
         return http.build();
     }
 
@@ -78,5 +88,29 @@ public class DevConfig {
                     request.anyRequest().permitAll();
                 });
         return http.build();
+    }
+
+
+    @Bean
+    LettuceConnectionFactory connectionFactory() {
+        return new LettuceConnectionFactory();
+    }
+
+    @Bean
+    RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
+
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        return template;
+    }
+
+    @Bean
+    SecureRandom secureRandom() {
+        return new SecureRandom();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

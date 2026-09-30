@@ -15,7 +15,6 @@ public class RsaKeyProperties {
     private final KeyPair keyPair;
 
     public RsaKeyProperties() throws NoSuchAlgorithmException {
-        // تولید کلید RSA با طول 2048 بیت (استاندارد امنیتی)
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
         this.keyPair = keyPairGenerator.generateKeyPair();
