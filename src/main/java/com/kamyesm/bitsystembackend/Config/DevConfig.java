@@ -3,6 +3,7 @@ package com.kamyesm.bitsystembackend.Config;
 import com.kamyesm.bitsystembackend.Security.OtpAuthenticationProvider;
 import com.kamyesm.bitsystembackend.Utils.Enum.StaffRole;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,9 +30,10 @@ import java.util.List;
 @Configuration
 @Profile("dev")
 @EnableJpaAuditing
+@RequiredArgsConstructor
 public class DevConfig {
 
-    private OtpAuthenticationProvider otpAuthenticationProvider;
+    private final OtpAuthenticationProvider otpAuthenticationProvider;
 
     @Bean
     @Order(2)
@@ -91,23 +93,6 @@ public class DevConfig {
     }
 
 
-    @Bean
-    LettuceConnectionFactory connectionFactory() {
-        return new LettuceConnectionFactory();
-    }
-
-    @Bean
-    RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
-
-        RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        return template;
-    }
-
-    @Bean
-    SecureRandom secureRandom() {
-        return new SecureRandom();
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

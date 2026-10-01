@@ -6,7 +6,6 @@ import com.kamyesm.bitsystembackend.DTO.Auth.VerifyOTPResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface AuthAndUserService {
     void sendOTP(String phoneNumber);
     boolean verifyOTP(OTPVerifyRequest request);

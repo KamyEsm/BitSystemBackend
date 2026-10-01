@@ -22,6 +22,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class AuthAndUserServiceImp implements AuthAndUserService {
 
     private final RedisTemplate<String , String> redisTemplate;
